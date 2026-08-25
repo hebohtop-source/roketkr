@@ -1,0 +1,80 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.production
+    volumes:
+      - ./public:/app/public
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app_network
+
+  db:
+    image: mysql:8.0
+    restart: always
+    command: --innodb-buffer-pool-size=128M
+    environment:
+      MYSQL_DATABASE: roketkr
+      MYSQL_USER: roketkr_user
+      MYSQL_PASSWORD: roketkr_password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3310:3306"
+    volumes:
+      - roketkr_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    mem_limit: 600m
+    networks:
+      - app_network
+
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    restart: always
+    ports:
+      - "3001:3000"
+    environment:
+      DATABASE_URL: postgresql://umami:umami@umami_db:5432/umami
+      DATABASE_TYPE: postgresql
+      APP_SECRET: REPLACE_WITH_YOUR_OWN_SECRET
+    depends_on:
+      umami_db:
+        condition: service_healthy
+    mem_limit: 400m
+    networks:
+      - app_network
+
+  umami_db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: umami
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: umami
+    volumes:
+      - umami_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U umami"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    mem_limit: 300m
+    networks:
+      - app_network
+
+networks:
+  app_network:
+
+volumes:
+  roketkr_db_data:
+  umami_db_data:

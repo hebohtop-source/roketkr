@@ -1,0 +1,14 @@
+"use client";
+
+import AdminOrders from "@/components/AdminOrders";
+
+
+const DashboardOrdersPage = () => {
+  return (
+    <div className="bg-white flex justify-start max-w-screen-2xl mx-auto h-full max-xl:flex-col max-xl:h-fit">
+      <AdminOrders />
+    </div>
+  );
+};
+
+export default DashboardOrdersPage;
