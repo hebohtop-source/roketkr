@@ -31,7 +31,7 @@ export default async function ProductsPage(props: {
 }) {
   const { category: categorySlug } = await props.params;
 
-  const searchParams = (await props.searchParams) ?? {};
+  const searchParams: FilterParams = {};
 
   const isDemoMode = process.env.DEMO_MODE !== "false";
   const resolvedCategory = isDemoMode

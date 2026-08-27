@@ -60,6 +60,7 @@ try {
   for (const { source, backup } of [...movedPaths].reverse()) {
     if (await exists(backup)) {
       await mkdir(path.dirname(source), { recursive: true });
+      await rm(source, { recursive: true, force: true });
       await rename(backup, source);
     }
   }

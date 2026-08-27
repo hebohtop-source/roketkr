@@ -18,7 +18,7 @@ export type FilterParams = {
 export default async function CatalogPage(props: {
   searchParams?: Promise<FilterParams>;
 }) {
-  const searchParams = (await props.searchParams) ?? {};
+  const searchParams: FilterParams = {};
 
   const { products, totalPages, currentPage } = filterDemoProducts(searchParams);
 
