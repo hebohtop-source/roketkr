@@ -4,6 +4,7 @@ import { category } from "@/db/schema";
 import { filterDemoProducts } from "@/lib/demo-data";
 import { eq } from "drizzle-orm";
 import { getDemoProducts } from "@/lib/demo-data";
+import { Suspense } from "react";
 
 export function generateStaticParams() {
   return ["body", "lighting", "exhaust"].map((category) => ({ category }));
@@ -49,7 +50,8 @@ export default async function ProductsPage(props: {
   const { products, totalPages, currentPage } = filterDemoProducts(enrichedParams);
 
   return (
-    <ProductsPageClient
+    <Suspense fallback={null}>
+      <ProductsPageClient
       searchParams={enrichedParams}
       currentCategorySlug={categorySlug}
       tags={[]}
@@ -60,6 +62,7 @@ export default async function ProductsPage(props: {
       totalPages={totalPages}
       currentPage={currentPage}
       children={<></>}
-    />
+      />
+    </Suspense>
   );
 }

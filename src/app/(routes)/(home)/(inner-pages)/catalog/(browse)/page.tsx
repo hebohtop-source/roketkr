@@ -1,5 +1,6 @@
 import { ProductsPageClient } from "@/components/ProductsPageClient";
 import { filterDemoProducts } from "@/lib/demo-data";
+import { Suspense } from "react";
 
 export type FilterParams = {
   name?: string;
@@ -23,7 +24,8 @@ export default async function CatalogPage(props: {
   const { products, totalPages, currentPage } = filterDemoProducts(searchParams);
 
   return (
-    <ProductsPageClient
+    <Suspense fallback={null}>
+      <ProductsPageClient
       searchParams={searchParams}
       currentCategorySlug=""
       tags={[]}
@@ -35,6 +37,7 @@ export default async function CatalogPage(props: {
       currentPage={currentPage}
       selectedModel={null}
       children={<></>}
-    />
+      />
+    </Suspense>
   );
 }
