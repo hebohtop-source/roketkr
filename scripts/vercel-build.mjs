@@ -1,4 +1,4 @@
-import { rename, access } from "node:fs/promises";
+import { rename, access, mkdir, rm } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import path from "node:path";
 
@@ -10,7 +10,7 @@ const disabledPaths = [
 ];
 const movedPaths = disabledPaths.map((source) => ({
   source,
-  backup: `${source}.vercel-demo-disabled`,
+  backup: path.join(projectRoot, ".vercel-demo-disabled", path.relative(projectRoot, source)),
 }));
 
 async function exists(filePath) {
@@ -39,15 +39,23 @@ let exitCode = 1;
 
 try {
   if (demoMode) {
+    await mkdir(path.join(projectRoot, ".vercel-demo-disabled"), { recursive: true });
     for (const { source, backup } of movedPaths) {
-      if (await exists(source)) await rename(source, backup);
+      if (await exists(source)) {
+        await mkdir(path.dirname(backup), { recursive: true });
+        await rename(source, backup);
+      }
     }
   }
   exitCode = await runNextBuild();
 } finally {
   for (const { source, backup } of [...movedPaths].reverse()) {
-    if (await exists(backup)) await rename(backup, source);
+    if (await exists(backup)) {
+      await mkdir(path.dirname(source), { recursive: true });
+      await rename(backup, source);
+    }
   }
+  await rm(path.join(projectRoot, ".vercel-demo-disabled"), { recursive: true, force: true });
 }
 
 process.exitCode = exitCode;
