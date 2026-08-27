@@ -11,8 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Vehicle() {
-  const page = await getPageContent("vehicle-registration");
-  const data = page?.content ?? defaultVehicleData;
+  const data = defaultVehicleData;
 
   return (
     <div className="flex w-full flex-col">
