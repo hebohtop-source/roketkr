@@ -1,5 +1,4 @@
 import { CatalogCard } from "../catalog-card";
-import { getActiveCategories } from "@/lib/services/categoryService";
 
 const fallbackCategories = [
   { slug: "tuning", name: "Тюнинг", imageUrl: "/uploads/gallery/placeholder.jpg" },
@@ -11,8 +10,7 @@ const fallbackCategories = [
 ];
 
 export const Catalog = async ({ title }: { title?: string }) => {
-  const CATEGORIES = await getActiveCategories();
-  const items = CATEGORIES.length ? CATEGORIES : fallbackCategories;
+  const items = fallbackCategories;
 
   return (
     <section className="section-margin-bottom py-8">

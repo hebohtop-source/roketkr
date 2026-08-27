@@ -1,5 +1,4 @@
 
-import { galleryService } from "@/lib/services/galleryService";
 import { PhotoGalleryClient } from "../carousel/PhotoGalleryClient";
 
 const fallbackGalleries = [
@@ -9,6 +8,5 @@ const fallbackGalleries = [
 ];
 
 export const PhotoGallery = async () => {
-  const galleries = await galleryService.getActiveGalleries();
-  return <PhotoGalleryClient galleries={galleries.length ? galleries : fallbackGalleries} />;
+  return <PhotoGalleryClient galleries={fallbackGalleries} />;
 };

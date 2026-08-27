@@ -1,5 +1,3 @@
-import { promotionService } from "@/lib/services/promotionService"
-
 import { PromotionCard } from "../carousel/PromotionCard"
 import { CarouselSection } from "../carousel/CarouselSection"
 
@@ -29,8 +27,7 @@ const fallbackPromotions = [
 ];
 
 export async function Promotions() {
-  const promotions = await promotionService.getActiveHomePromotions();
-  const items = promotions.length ? promotions : fallbackPromotions;
+  const items = fallbackPromotions;
 
   return (
     <CarouselSection

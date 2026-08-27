@@ -1,4 +1,3 @@
-import { getCategories } from "@/lib/services/categoryService";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -85,7 +84,7 @@ const SocialIcons = () => (
 export const Footer = async ({
   CATEGORIES,
 }: {
-  CATEGORIES: Awaited<ReturnType<typeof getCategories>>;
+  CATEGORIES: { id?: string; slug: string; name: string; imageUrl?: string | null }[];
 }) => {
   return (
     <footer className="bottom w-full bg-[#222]">

@@ -1,14 +1,12 @@
 import { FloatingSocials } from "@/components/sections/FloatingSocials";
 import { Footer } from "@/components/shared/Footer";
 import { Hero } from "@/components/shared/hero";
-import { getCategories } from "@/lib/services/categoryService";
 
 export default async function HomeLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const CATEGORIES = await getCategories();
   return (
     <>
       <Hero />
@@ -19,7 +17,7 @@ export default async function HomeLayout({
       >
         {children}
       </div>
-      <Footer CATEGORIES={CATEGORIES} />
+      <Footer CATEGORIES={[]} />
     </>
   );
 }
