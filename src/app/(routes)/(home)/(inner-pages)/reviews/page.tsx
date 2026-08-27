@@ -1,4 +1,5 @@
 import { ReviewsClient } from "@/components/ReviewsClient"
+import { Suspense } from "react"
 
 
 export default async function Reviews() {
@@ -15,11 +16,13 @@ export default async function Reviews() {
         </p>
 
       </div>
-      <ReviewsClient
-        initialReviews={reviews}
-        totalPages={1}
-        currentPage={1}
-      />
+      <Suspense fallback={null}>
+        <ReviewsClient
+          initialReviews={reviews}
+          totalPages={1}
+          currentPage={1}
+        />
+      </Suspense>
     </div>
   )
 }
