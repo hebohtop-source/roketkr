@@ -1,9 +1,5 @@
 import { ProductsPageClient } from "@/components/ProductsPageClient";
-import { Catalog } from "@/components/sections/Catalog";
-import { db } from "@/db";
-import { carModel } from "@/db/schema";
-import { getPageData } from "@/lib/services/filterService";
-import { eq } from "drizzle-orm";
+import { filterDemoProducts } from "@/lib/demo-data";
 
 export type FilterParams = {
   name?: string;
@@ -24,34 +20,20 @@ export default async function CatalogPage(props: {
 }) {
   const searchParams = (await props.searchParams) ?? {};
 
-  const {
-    tags,
-    categories,
-    promotions,
-    products,
-    totalPages,
-    currentPage,
-    models,
-  } = await getPageData(searchParams);
-
-  const selectedModel = searchParams.model
-    ? ((await db.query.carModel.findFirst({
-        where: eq(carModel.slug, searchParams.model),
-      })) ?? null)
-    : null;
+  const { products, totalPages, currentPage } = filterDemoProducts(searchParams);
 
   return (
     <ProductsPageClient
       searchParams={searchParams}
       currentCategorySlug=""
-      tags={tags}
-      models={models}
-      categories={categories}
-      promotions={promotions}
+      tags={[]}
+      models={[]}
+      categories={[]}
+      promotions={[]}
       initialProducts={products}
       totalPages={totalPages}
       currentPage={currentPage}
-      selectedModel={selectedModel}
+      selectedModel={null}
       children={<></>}
     />
   );

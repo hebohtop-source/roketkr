@@ -1,7 +1,7 @@
 import { ProductsPageClient } from "@/components/ProductsPageClient";
 import { db } from "@/db";
 import { category } from "@/db/schema";
-import { getPageData } from "@/lib/services/filterService";
+import { filterDemoProducts } from "@/lib/demo-data";
 import { eq } from "drizzle-orm";
 import { getDemoProducts } from "@/lib/demo-data";
 
@@ -46,24 +46,16 @@ export default async function ProductsPage(props: {
     categories: isDemoMode ? categorySlug : undefined,
   };
 
-  const {
-    tags,
-    categories,
-    promotions,
-    products,
-    totalPages,
-    currentPage,
-    models,
-  } = await getPageData(enrichedParams);
+  const { products, totalPages, currentPage } = filterDemoProducts(enrichedParams);
 
   return (
     <ProductsPageClient
       searchParams={enrichedParams}
       currentCategorySlug={categorySlug}
-      tags={tags}
-      models={models}
-      categories={categories}
-      promotions={promotions}
+      tags={[]}
+      models={[]}
+      categories={[]}
+      promotions={[]}
       initialProducts={products}
       totalPages={totalPages}
       currentPage={currentPage}
