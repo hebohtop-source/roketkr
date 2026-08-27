@@ -14,7 +14,7 @@ import type {
   Promotion,
 } from "@/lib/repositories/filter/filterRepository";
 import type { FilterParams } from "@/app/(routes)/(home)/(inner-pages)/catalog/(browse)/[category]/page";
-import { filterProductsAction } from "@/lib/services/filterService";
+import { filterDemoProducts } from "@/lib/demo-data";
 import { Slider } from "../ui/slider";
 import { CarModels } from "../ProductsPageClient";
 import { DEFAULT_MIN, DEFAULT_MAX } from "./CONSTANTS";
@@ -31,7 +31,7 @@ interface Props {
   searchParams: FilterParams;
   currentCategorySlug?: string;
   onResults: (
-    products: Awaited<ReturnType<typeof filterProductsAction>>,
+    products: ReturnType<typeof filterDemoProducts>,
   ) => void;
 }
 

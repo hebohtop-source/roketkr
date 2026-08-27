@@ -1,12 +1,20 @@
 // CompatibleProducts.tsx
 "use client"
 import { useEffect, useState } from "react"
-import { filterProductsAction, getCarModelsForProducts } from "@/lib/services/filterService"
 import { ProductGrid } from "@/components/ProductGrid"
 import type { ResolvedProduct } from "@/lib/repositories/filter/filterRepository"
 import Image from "next/image"
 
-type SelectedModel = Awaited<ReturnType<typeof getCarModelsForProducts>>[number]
+type SelectedModel = {
+  id: string
+  brand: string
+  model: string
+  generation: string | null
+  yearFrom: number | null
+  yearTo: number | null
+  slug: string
+  imageUrl: string | null
+}
 
 type ModelSection = {
   model: SelectedModel
@@ -24,21 +32,7 @@ export function CompatibleProducts({ cartProductIds }: { cartProductIds: string[
     }
     let cancelled = false
 
-    async function load() {
-      const models = await getCarModelsForProducts(cartProductIds)
-      if (cancelled || models.length === 0) return
-
-      const results = await Promise.all(
-        models.map(async (model) => {
-          const { products } = await filterProductsAction({ model: model.slug })
-          const filtered = products.filter((p) => !cartProductIds.includes(p.id))
-          return { model, products: filtered }
-        })
-      )
-      if (!cancelled) setSections(results.filter((s) => s.products.length > 0))
-    }
-
-    load()
+    setSections([])
     return () => { cancelled = true }
   }, [key])
 

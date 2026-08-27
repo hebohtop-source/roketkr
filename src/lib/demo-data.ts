@@ -70,3 +70,30 @@ export function getDemoProducts(categorySlug?: string) {
   if (!categorySlug) return [...demoProducts];
   return demoProducts.filter((product) => product.category?.slug === categorySlug);
 }
+
+export function filterDemoProducts(input: {
+  name?: string;
+  categories?: string | string[];
+  priceMin?: string;
+  priceMax?: string;
+}) {
+  const category = Array.isArray(input.categories)
+    ? input.categories[0]
+    : input.categories;
+  const name = input.name?.toLowerCase();
+  const products = getDemoProducts(category).filter((product) => {
+    const price = Number(product.price);
+    return (
+      (!name || product.name.toLowerCase().includes(name)) &&
+      (!input.priceMin || price >= Number(input.priceMin)) &&
+      (!input.priceMax || price <= Number(input.priceMax))
+    );
+  });
+
+  return {
+    products,
+    total: products.length,
+    totalPages: 1,
+    currentPage: 1,
+  };
+}

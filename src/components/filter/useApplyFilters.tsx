@@ -2,10 +2,8 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import { startTransition, useCallback } from "react";
-import {
-  filterProductsAction,
-  FilterParams,
-} from "@/lib/services/filterService";
+import type { FilterParams } from "@/lib/services/filterService";
+import { filterDemoProducts } from "@/lib/demo-data";
 import { DEFAULT_MAX } from "./CONSTANTS";
 
 export function useApplyFilters({
@@ -14,7 +12,7 @@ export function useApplyFilters({
 }: {
   searchParams: FilterParams;
   onResults: (
-    products: Awaited<ReturnType<typeof filterProductsAction>>,
+    products: ReturnType<typeof filterDemoProducts>,
   ) => void;
 }) {
   const router = useRouter();
@@ -58,7 +56,7 @@ export function useApplyFilters({
       router.push(`${pathname}?${next.toString()}`);
 
       startTransition(async () => {
-        const results = await filterProductsAction({
+        const results = filterDemoProducts({
           ...merged,
           tags: patch.tags ?? selectedTags,
           orderBy:
@@ -89,7 +87,7 @@ export function useApplyFilters({
   const clearAll = () => {
     router.push(pathname);
     startTransition(async () => {
-      const results = await filterProductsAction({
+      const results = filterDemoProducts({
         orderBy: "BY_POPULARITY",
         categoryId: searchParams.categoryId,
       });

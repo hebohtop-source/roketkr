@@ -19,7 +19,7 @@ import type {
 } from "@/lib/repositories/filter/filterRepository";
 import type { FilterParams } from "@/app/(routes)/(home)/(inner-pages)/catalog/(browse)/[category]/page";
 import { Pagination } from "./shared/Pagination";
-import { filterProductsAction } from "@/lib/services/filterService";
+import { filterDemoProducts } from "@/lib/demo-data";
 import { usePagination } from "./shared/breadcrumbs/usePagination";
 import Image from "next/image";
 import { Settings2 } from "lucide-react";
@@ -155,7 +155,7 @@ export function ProductsPageClient({
 
   const runMobileSearch = useCallback(
     async (name: string, id: number) => {
-      const result = await filterProductsAction({
+      const result = filterDemoProducts({
         ...searchParams,
         name: name || undefined,
         page: "1",
@@ -212,7 +212,7 @@ export function ProductsPageClient({
       const id = ++requestIdRef.current;
       setIsPageLoading(true);
       try {
-        const result = await filterProductsAction({
+        const result = filterDemoProducts({
           ...searchParams,
           page: String(page),
         });
