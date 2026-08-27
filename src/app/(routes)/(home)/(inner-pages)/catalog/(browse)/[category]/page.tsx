@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { category } from "@/db/schema";
 import { getPageData } from "@/lib/services/filterService";
 import { eq } from "drizzle-orm";
+import { getDemoProducts } from "@/lib/demo-data";
 
 export type FilterParams = {
   inStock?: boolean;
@@ -30,13 +31,16 @@ export default async function ProductsPage(props: {
 
   const searchParams = (await props.searchParams) ?? {};
 
-  const resolvedCategory = await db.query.category.findFirst({
-    where: eq(category.slug, categorySlug),
-  });
+  const resolvedCategory = process.env.DEMO_MODE === "true"
+    ? null
+    : await db.query.category.findFirst({
+        where: eq(category.slug, categorySlug),
+      });
 
   const enrichedParams = {
     ...searchParams,
     categoryId: resolvedCategory?.id,
+    categories: process.env.DEMO_MODE === "true" ? categorySlug : undefined,
   };
 
   const {

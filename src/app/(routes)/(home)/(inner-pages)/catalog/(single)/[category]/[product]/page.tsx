@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { eq } from "drizzle-orm";
 import { product } from "@/db/schema";
 import { SingleProduct } from "@/components/ui/SingleProduct";
+import { getDemoProduct } from "@/lib/demo-data";
 
 export default async function ProductPage({
   params,
@@ -9,6 +10,18 @@ export default async function ProductPage({
   params: Promise<{ product: string }>;
 }) {
   const { product: productSlug } = await params;
+
+  if (process.env.DEMO_MODE === "true") {
+    const demoProduct = getDemoProduct(productSlug);
+    if (!demoProduct) {
+      return (
+        <div className="w-full py-16 text-center">
+          <p className="font-manrope text-3xl font-bold text-[#222]">Товар не найден</p>
+        </div>
+      );
+    }
+    return <SingleProduct product={demoProduct} />;
+  }
 
   try {
     const p = await db.query.product.findFirst({

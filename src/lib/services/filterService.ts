@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { carModel, productCarCompatibility } from "@/db/schema";
 import { eq, inArray } from "drizzle-orm";
 import { filterRepository } from "../repositories/filter/filterRepository";
+import { getDemoProducts } from "../demo-data";
 
 export type FilterParams = {
   name?: string;
@@ -20,6 +21,8 @@ export type FilterParams = {
 };
 
 const PAGE_SIZE = 40;
+
+const isDemoMode = process.env.DEMO_MODE === "true";
 
 function toRepoParams(filters: FilterParams) {
   const page = Number(filters.page ?? 1);
@@ -43,6 +46,16 @@ function toRepoParams(filters: FilterParams) {
 }
 
 export async function filterProductsAction(filters: FilterParams) {
+  if (isDemoMode) {
+    const products = getDemoProducts(filters.categories?.toString());
+    return {
+      products,
+      total: products.length,
+      totalPages: 1,
+      currentPage: 1,
+    };
+  }
+
   const { products, total } = await filterRepository.filterProducts(
     toRepoParams(filters),
   );
@@ -56,6 +69,7 @@ export async function filterProductsAction(filters: FilterParams) {
 }
 
 export async function getCarModelsForProducts(productIds: string[]) {
+  if (isDemoMode) return [];
   if (productIds.length === 0) return [];
   const rows = await db
     .select({
@@ -76,6 +90,24 @@ export async function getCarModelsForProducts(productIds: string[]) {
 }
 
 export async function getPageData(searchParams: FilterParams) {
+  if (isDemoMode) {
+    const products = getDemoProducts(
+      Array.isArray(searchParams.categories)
+        ? searchParams.categories[0]
+        : searchParams.categories,
+    );
+    return {
+      tags: [],
+      categories: [],
+      promotions: [],
+      models: [],
+      products,
+      total: products.length,
+      totalPages: 1,
+      currentPage: 1,
+    };
+  }
+
   try {
     const [tags, categories, promotions, filterResult, models] =
       await Promise.all([
