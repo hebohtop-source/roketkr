@@ -1,14 +1,12 @@
 import { ReviewsClient } from "@/components/ReviewsClient"
-import { getAllProducts } from "@/lib/services/productService"
-import { getReviewsAction } from "@/lib/services/getReviewsAction"
-import { CustomerReviewModal } from "@/components/shared/CustomerReviewModal"
-import { NewReviewTrigger } from "@/components/shared/NewReviewTrigger"
 
 
 export default async function Reviews({ searchParams }: { searchParams?: Promise<{ page?: string }> }) {
   const params = await searchParams ?? {}
-  const products = await getAllProducts()
-  const { reviews, totalPages, currentPage } = await getReviewsAction(params)
+  const reviews = [
+    { id: "demo-review-1", authorName: "Алексей", rating: 5, body: "Отличный сервис и аккуратная установка.", createdAt: new Date() },
+    { id: "demo-review-2", authorName: "Дмитрий", rating: 5, body: "Помогли подобрать комплект, результатом доволен.", createdAt: new Date() },
+  ]
 
   return (
     <div className="w-full flex flex-col gap-6 md:gap-8">
@@ -17,15 +15,11 @@ export default async function Reviews({ searchParams }: { searchParams?: Promise
           Отзывы
         </p>
 
-        <CustomerReviewModal
-          productId="5"
-          trigger={<NewReviewTrigger />}
-        />
       </div>
       <ReviewsClient
         initialReviews={reviews}
-        totalPages={totalPages}
-        currentPage={currentPage}
+        totalPages={1}
+        currentPage={1}
       />
     </div>
   )

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Input } from "../ui/input";
 import { ShoppingCart, Heart, Loader2, Search, X } from "lucide-react";
-import { searchProducts } from "@/lib/services/productService";
+import { demoProducts } from "@/lib/demo-data";
 import { useBoundStore } from "@/lib/slices/useBoundStore";
 import { useStore } from "zustand";
 import { useWishlist } from "@/hooks/useWishlist";
@@ -49,7 +49,9 @@ export const SearchByName = ({
     debounceRef.current = setTimeout(async () => {
       setLoading(true);
       try {
-        const data = await searchProducts(value);
+        const data = demoProducts.filter((product) =>
+          product.name.toLowerCase().includes(value.toLowerCase()),
+        );
         setResults(data);
         setOpen(true);
       } catch {
