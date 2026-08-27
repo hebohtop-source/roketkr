@@ -27,10 +27,14 @@ export async function getCategoriesForCarModel(carModelId: string) {
 }
 
 export async function getModels() {
-  const models = await db
-    .select()
-    .from(carModel).limit(6)
-  return models
+  try {
+    const models = await db
+      .select()
+      .from(carModel).limit(6)
+    return models
+  } catch {
+    return []
+  }
 }
 
 function toSlug(brand: string, model: string, generation?: string, yearFrom?: number, yearTo?: number) {

@@ -7,12 +7,13 @@ import { anonymous, admin } from "better-auth/plugins";
 
 export const auth = betterAuth({
   trustedOrigins: [
+    process.env.NEXT_PUBLIC_BASE_URL,
     "http://localhost:3000",
     "http://161.104.19.209:3000",
     "https://found-monitor-delivers-enhance.trycloudflare.com",
     "https://www.roketkrd.ru",
     "https://roketkrd.ru",
-  ],
+  ].filter((origin): origin is string => Boolean(origin)),
   database: drizzleAdapter(db, {
     provider: "mysql",
   }),

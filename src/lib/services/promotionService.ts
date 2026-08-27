@@ -22,13 +22,14 @@ type RawPromotions = Awaited<ReturnType<typeof promotionRepository.findAllActive
 
 export const promotionService = {
   async getActiveHomePromotions(): Promise<ResolvedPromotion[]> {
-    const raw = await promotionRepository.findAllActive()
+    try {
+      const raw = await promotionRepository.findAllActive()
 
-
-    return raw
-      // .filter(p => p.placement === "home")
-      // .sort((a, b) => b.priority - a.priority)
-      .map(p => resolvePromotion(p))
+      return raw
+        .map(p => resolvePromotion(p))
+    } catch {
+      return []
+    }
   },
 
   // async getPromotionsForProduct(productId: string): Promise<ResolvedPromotion[]> {

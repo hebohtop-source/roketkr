@@ -14,15 +14,23 @@ export type CreateCategoryInput = {
 };
 
 export async function getCategories() {
-  return db.query.category.findMany({
-    orderBy: (category, { asc }) => [asc(category.sortOrder), asc(category.name)],
-  });
+  try {
+    return await db.query.category.findMany({
+      orderBy: (category, { asc }) => [asc(category.sortOrder), asc(category.name)],
+    });
+  } catch {
+    return [];
+  }
 }
 
 export async function getCategoryById(id: string) {
-  return db.query.category.findFirst({
-    where: eq(category.id, id),
-  });
+  try {
+    return await db.query.category.findFirst({
+      where: eq(category.id, id),
+    });
+  } catch {
+    return null;
+  }
 }
 
 export async function createCategory(input: CreateCategoryInput) {
@@ -59,10 +67,14 @@ export async function deleteCategories(ids: string[]) {
 }
 
 export async function getActiveCategories() {
-  const categories = await db
-    .select({ slug: category.slug, name: category.name, imageUrl: category.imageUrl })
-    .from(category)
-    .where(eq(category.isActive, true))
-    .orderBy(asc(category.sortOrder))
-  return categories
+  try {
+    const categories = await db
+      .select({ slug: category.slug, name: category.name, imageUrl: category.imageUrl })
+      .from(category)
+      .where(eq(category.isActive, true))
+      .orderBy(asc(category.sortOrder))
+    return categories
+  } catch {
+    return []
+  }
 }

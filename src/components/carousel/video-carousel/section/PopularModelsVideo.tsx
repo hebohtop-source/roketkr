@@ -47,39 +47,90 @@ async function getFirstCompatibleProductForCarModel(carModelId: string) {
   return result[0] ?? null
 }
 
+const fallbackPopularModels = [
+  {
+    id: "fallback-model-1",
+    brand: "Volkswagen",
+    model: "Golf",
+    generation: "Mk8",
+    slug: "golf",
+    imageUrl: "/uploads/gallery/placeholder.jpg",
+    isPopular: true,
+    categories: [],
+    primaryVideo: null,
+    firstCompatibleProduct: null,
+  },
+  {
+    id: "fallback-model-2",
+    brand: "Toyota",
+    model: "Camry",
+    generation: "XV70",
+    slug: "camry",
+    imageUrl: "/uploads/gallery/placeholder.jpg",
+    isPopular: true,
+    categories: [],
+    primaryVideo: null,
+    firstCompatibleProduct: null,
+  },
+  {
+    id: "fallback-model-3",
+    brand: "BMW",
+    model: "3 Series",
+    generation: "G20",
+    slug: "3-series",
+    imageUrl: "/uploads/gallery/placeholder.jpg",
+    isPopular: true,
+    categories: [],
+    primaryVideo: null,
+    firstCompatibleProduct: null,
+  },
+];
+
 export async function PopularModelsVideo() {
-  const POPULAR_MODELS = await db
-    .select()
-    .from(carModel)
-    .where(eq(carModel.isPopular, true))
+  try {
+    const POPULAR_MODELS = await db
+      .select()
+      .from(carModel)
+      .where(eq(carModel.isPopular, true))
 
-  const modelsWithCategories = await Promise.all(
-    POPULAR_MODELS.map(async (car) => {
-      const [categories, primaryVideo, firstCompatibleProduct] = await Promise.all([
-        getCategoriesForCarModel(car.id),
-        getPrimaryVideoForCarModel(car.id),
-        getFirstCompatibleProductForCarModel(car.id),
-      ])
-      return {
-        ...car,
-        categories,
-        primaryVideo: primaryVideo
-          ? {
-            url: primaryVideo.url ?? undefined,
-            placeholderUrl: primaryVideo.placeholderUrl ?? undefined,
-            altText: primaryVideo.altText ?? undefined,
-          }
-          : null,
-        firstCompatibleProduct
-      }
-    })
-  )
+    const modelsWithCategories = await Promise.all(
+      POPULAR_MODELS.map(async (car) => {
+        const [categories, primaryVideo, firstCompatibleProduct] = await Promise.all([
+          getCategoriesForCarModel(car.id),
+          getPrimaryVideoForCarModel(car.id),
+          getFirstCompatibleProductForCarModel(car.id),
+        ])
+        return {
+          ...car,
+          categories,
+          primaryVideo: primaryVideo
+            ? {
+              url: primaryVideo.url ?? undefined,
+              placeholderUrl: primaryVideo.placeholderUrl ?? undefined,
+              altText: primaryVideo.altText ?? undefined,
+            }
+            : null,
+          firstCompatibleProduct
+        }
+      })
+    )
 
-  return (
-    <CarouselSection
-      title="Популярные модели"
-      items={modelsWithCategories}
-      renderItem={(item) => <PopularModelCard {...item} />}
-    />
-  )
+    const items = modelsWithCategories.length ? modelsWithCategories : fallbackPopularModels;
+
+    return (
+      <CarouselSection
+        title="Популярные модели"
+        items={items}
+        renderItem={(item) => <PopularModelCard {...item} />}
+      />
+    )
+  } catch {
+    return (
+      <CarouselSection
+        title="Популярные модели"
+        items={fallbackPopularModels}
+        renderItem={(item) => <PopularModelCard {...item} />}
+      />
+    )
+  }
 }

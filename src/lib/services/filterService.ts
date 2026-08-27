@@ -76,22 +76,35 @@ export async function getCarModelsForProducts(productIds: string[]) {
 }
 
 export async function getPageData(searchParams: FilterParams) {
-  const [tags, categories, promotions, filterResult, models] =
-    await Promise.all([
-      filterRepository.getTags(),
-      filterRepository.getActiveCategories(),
-      filterRepository.getActivePromotions(),
-      filterRepository.filterProducts(toRepoParams(searchParams)),
-      filterRepository.getModels(),
-    ]);
-  return {
-    tags,
-    categories,
-    promotions,
-    models,
-    products: filterResult.products,
-    total: filterResult.total,
-    totalPages: Math.ceil(filterResult.total / PAGE_SIZE),
-    currentPage: Number(searchParams.page ?? 1),
-  };
+  try {
+    const [tags, categories, promotions, filterResult, models] =
+      await Promise.all([
+        filterRepository.getTags(),
+        filterRepository.getActiveCategories(),
+        filterRepository.getActivePromotions(),
+        filterRepository.filterProducts(toRepoParams(searchParams)),
+        filterRepository.getModels(),
+      ]);
+    return {
+      tags,
+      categories,
+      promotions,
+      models,
+      products: filterResult.products,
+      total: filterResult.total,
+      totalPages: Math.ceil(filterResult.total / PAGE_SIZE),
+      currentPage: Number(searchParams.page ?? 1),
+    };
+  } catch {
+    return {
+      tags: [],
+      categories: [],
+      promotions: [],
+      models: [],
+      products: [],
+      total: 0,
+      totalPages: 0,
+      currentPage: Number(searchParams.page ?? 1),
+    };
+  }
 }

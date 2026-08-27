@@ -25,31 +25,59 @@ async function getProductAuditInfo(productId: string) {
 // Reads
 
 export async function getProductById(productId: string) {
-  return await productRepository.fetchProductById(productId);
+  try {
+    return await productRepository.fetchProductById(productId);
+  } catch {
+    return null;
+  }
 }
 
 export async function getProductBySlug(slug: string) {
-  return await productRepository.fetchProductBySlug(slug);
+  try {
+    return await productRepository.fetchProductBySlug(slug);
+  } catch {
+    return null;
+  }
 }
 
 export async function getAllProducts() {
-  return await productRepository.findAll();
+  try {
+    return await productRepository.findAll();
+  } catch {
+    return [];
+  }
 }
 
 export async function getPopularProducts() {
-  return await productRepository.findAllPopular();
+  try {
+    return await productRepository.findAllPopular();
+  } catch {
+    return [];
+  }
 }
 
 export async function getProductsByCategoryName(categoryId: string) {
-  return await productRepository.fetchProductsByCategoryName(categoryId);
+  try {
+    return await productRepository.fetchProductsByCategoryName(categoryId);
+  } catch {
+    return [];
+  }
 }
 
 export async function searchProducts(query: string) {
-  return await productRepository.searchByName(query);
+  try {
+    return await productRepository.searchByName(query);
+  } catch {
+    return [];
+  }
 }
 
 export async function getCategories() {
-  return await db.select().from(category).where(eq(category.isActive, true));
+  try {
+    return await db.select().from(category).where(eq(category.isActive, true));
+  } catch {
+    return [];
+  }
 }
 
 // Mutations

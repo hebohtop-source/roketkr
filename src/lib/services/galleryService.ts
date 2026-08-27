@@ -3,6 +3,10 @@ import { galleryRepository } from "../repositories/gallery/galleryRepository";
 
 export const galleryService = {
   async getActiveGalleries() {
-    return galleryRepository.findAllForHome();
+    try {
+      return await galleryRepository.findAllForHome();
+    } catch {
+      return [];
+    }
   },
 };

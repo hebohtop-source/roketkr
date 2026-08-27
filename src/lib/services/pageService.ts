@@ -3,16 +3,20 @@ import { pageRepository } from "../repositories/page/pageRepository";
 import { pageSchemas, type PageKey, type PageData } from "@/lib/types/pages";
 
 export async function getPageContent<K extends PageKey>(pageKey: K) {
-  const page = await pageRepository.findByKey(pageKey);
-  if (!page) return null;
+  try {
+    const page = await pageRepository.findByKey(pageKey);
+    if (!page) return null;
 
-  const parsed = pageSchemas[pageKey].safeParse(page.content);
-  if (!parsed.success) {
-    console.error(`Invalid content for page "${pageKey}"`, parsed.error);
-    return null; // caller falls back to defaults
+    const parsed = pageSchemas[pageKey].safeParse(page.content);
+    if (!parsed.success) {
+      console.error(`Invalid content for page "${pageKey}"`, parsed.error);
+      return null;
+    }
+
+    return { ...page, content: parsed.data as PageData<K> };
+  } catch {
+    return null;
   }
-
-  return { ...page, content: parsed.data as PageData<K> };
 }
 
 export async function savePageContent<K extends PageKey>(
