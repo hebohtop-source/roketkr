@@ -5,6 +5,10 @@ import { getPageData } from "@/lib/services/filterService";
 import { eq } from "drizzle-orm";
 import { getDemoProducts } from "@/lib/demo-data";
 
+export function generateStaticParams() {
+  return ["body", "lighting", "exhaust"].map((category) => ({ category }));
+}
+
 export type FilterParams = {
   inStock?: boolean;
   name?: string;

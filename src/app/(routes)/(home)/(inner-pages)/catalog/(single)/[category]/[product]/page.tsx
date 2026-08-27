@@ -4,6 +4,14 @@ import { product } from "@/db/schema";
 import { SingleProduct } from "@/components/ui/SingleProduct";
 import { getDemoProduct } from "@/lib/demo-data";
 
+export function generateStaticParams() {
+  return [
+    { category: "body", product: "rocket-fender-flares" },
+    { category: "lighting", product: "led-headlight-kit" },
+    { category: "exhaust", product: "sport-exhaust-tip" },
+  ];
+}
+
 export default async function ProductPage({
   params,
 }: {

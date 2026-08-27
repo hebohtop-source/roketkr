@@ -6,6 +6,7 @@ const projectRoot = process.cwd();
 const disabledPaths = [
   path.join(projectRoot, "src", "app", "api"),
   path.join(projectRoot, "src", "app", "(routes)", "(protected)"),
+  path.join(projectRoot, "src", "app", "(routes)", "(home)", "(inner-pages)", "kit-installation", "[slug]"),
 ];
 const movedPaths = disabledPaths.map((source) => ({
   source,

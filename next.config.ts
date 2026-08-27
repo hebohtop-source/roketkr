@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  ...(process.env.DEMO_MODE !== "false"
+    ? {
+        output: "export" as const,
+        images: { unoptimized: true },
+      }
+    : {}),
   typescript: {
     ignoreBuildErrors: true,
   },
