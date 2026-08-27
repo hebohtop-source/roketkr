@@ -5,7 +5,14 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { restrictedUsernames } from "./usernames";
 import { anonymous, admin } from "better-auth/plugins";
 
+const isDemoMode = process.env.DEMO_MODE !== "false";
+const authSecret =
+  process.env.BETTER_AUTH_SECRET ??
+  (isDemoMode ? "demo-preview-secret-change-for-production" : undefined);
+
 export const auth = betterAuth({
+  secret: authSecret,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   trustedOrigins: [
     process.env.NEXT_PUBLIC_BASE_URL,
     "http://localhost:3000",

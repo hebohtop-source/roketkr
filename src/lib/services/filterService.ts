@@ -22,7 +22,7 @@ export type FilterParams = {
 
 const PAGE_SIZE = 40;
 
-const isDemoMode = process.env.DEMO_MODE === "true";
+const isDemoMode = process.env.DEMO_MODE !== "false";
 
 function toRepoParams(filters: FilterParams) {
   const page = Number(filters.page ?? 1);

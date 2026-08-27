@@ -11,7 +11,7 @@ export default async function ProductPage({
 }) {
   const { product: productSlug } = await params;
 
-  if (process.env.DEMO_MODE === "true") {
+  if (process.env.DEMO_MODE !== "false") {
     const demoProduct = getDemoProduct(productSlug);
     if (!demoProduct) {
       return (

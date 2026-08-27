@@ -31,7 +31,8 @@ export default async function ProductsPage(props: {
 
   const searchParams = (await props.searchParams) ?? {};
 
-  const resolvedCategory = process.env.DEMO_MODE === "true"
+  const isDemoMode = process.env.DEMO_MODE !== "false";
+  const resolvedCategory = isDemoMode
     ? null
     : await db.query.category.findFirst({
         where: eq(category.slug, categorySlug),
@@ -40,7 +41,7 @@ export default async function ProductsPage(props: {
   const enrichedParams = {
     ...searchParams,
     categoryId: resolvedCategory?.id,
-    categories: process.env.DEMO_MODE === "true" ? categorySlug : undefined,
+    categories: isDemoMode ? categorySlug : undefined,
   };
 
   const {
