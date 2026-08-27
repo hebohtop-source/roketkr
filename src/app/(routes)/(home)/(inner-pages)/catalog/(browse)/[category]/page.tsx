@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { ProductsPageClient } from "@/components/ProductsPageClient";
 import { db } from "@/db";
 import { category } from "@/db/schema";

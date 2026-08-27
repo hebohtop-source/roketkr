@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 import { ProductsPageClient } from "@/components/ProductsPageClient";
 import { Catalog } from "@/components/sections/Catalog";
 import { db } from "@/db";

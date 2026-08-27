@@ -8,7 +8,7 @@
     "prod:build": "docker system prune -f && docker compose down && docker compose up -d --build",
     "docker-dev": "docker compose -f docker-compose.dev.yml up",
     "docker-dev-update": "docker compose -f docker-compose.dev.yml up --build",
-    "build": "next build",
+    "build": "node scripts/vercel-build.mjs",
     "start": "next start",
     "tscheck": "tsc --noEmit",
     "lint": "eslint .",
