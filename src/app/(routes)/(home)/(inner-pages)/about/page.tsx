@@ -1,18 +1,15 @@
-import { getPageContent } from "@/lib/services/pageService";
 import { Advantages } from "@/components/sections/Advantages";
 import AboutUsNumbers from "@/components/sections/AboutUsNumbers";
 import { defaultAboutData } from "@/lib/constants/defaultPageData";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const page = await getPageContent("about");
-  const data = page?.content ?? defaultAboutData;
+  const data = defaultAboutData;
   return { title: data.meta.title, description: data.meta.description };
 }
 
 export default async function About() {
-  const page = await getPageContent("about");
-  const data = page?.content ?? defaultAboutData;
+  const data = defaultAboutData;
 
   return (
     <div className="w-full">

@@ -8,12 +8,6 @@ const disabledPaths = [
   path.join(projectRoot, "src", "app", "(routes)", "(protected)"),
   path.join(projectRoot, "src", "app", "(routes)", "(home)", "(inner-pages)", "cart"),
   path.join(projectRoot, "src", "app", "(routes)", "(home)", "(inner-pages)", "wishlist"),
-  path.join(projectRoot, "src", "app", "(routes)", "(home)", "(inner-pages)", "about"),
-  path.join(projectRoot, "src", "app", "(routes)", "(home)", "(inner-pages)", "certificates"),
-  path.join(projectRoot, "src", "app", "(routes)", "(home)", "(inner-pages)", "deals"),
-  path.join(projectRoot, "src", "app", "(routes)", "(home)", "(inner-pages)", "kit-installation"),
-  path.join(projectRoot, "src", "app", "(routes)", "(home)", "(inner-pages)", "vehicle-registration"),
-  path.join(projectRoot, "src", "app", "(routes)", "(home)", "(inner-pages)", "reviews"),
   path.join(projectRoot, "src", "app", "(routes)", "(home)", "(inner-pages)", "kit-installation", "[slug]"),
 ];
 const movedPaths = disabledPaths.map((source) => ({

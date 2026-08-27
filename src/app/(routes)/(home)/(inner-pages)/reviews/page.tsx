@@ -1,8 +1,7 @@
 import { ReviewsClient } from "@/components/ReviewsClient"
 
 
-export default async function Reviews({ searchParams }: { searchParams?: Promise<{ page?: string }> }) {
-  const params = await searchParams ?? {}
+export default async function Reviews() {
   const reviews = [
     { id: "demo-review-1", authorName: "Алексей", rating: 5, body: "Отличный сервис и аккуратная установка.", createdAt: new Date() },
     { id: "demo-review-2", authorName: "Дмитрий", rating: 5, body: "Помогли подобрать комплект, результатом доволен.", createdAt: new Date() },

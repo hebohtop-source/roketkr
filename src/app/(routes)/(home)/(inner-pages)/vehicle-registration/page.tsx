@@ -2,13 +2,11 @@ import { Advantages } from "@/components/sections/Advantages";
 import { DocGallery } from "@/components/sections/DocsGallery";
 import { WhyItMatters } from "@/components/sections/WhyItMatters";
 import { VideoCard } from "@/components/VideoCard";
-import { getPageContent } from "@/lib/services/pageService";
 import { defaultVehicleData } from "@/lib/constants/defaultPageData";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const page = await getPageContent("vehicle-registration");
-  const data = page?.content ?? defaultVehicleData;
+  const data = defaultVehicleData;
   return { title: data.meta.title, description: data.meta.description };
 }
 

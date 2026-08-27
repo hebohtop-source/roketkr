@@ -1,6 +1,10 @@
-import { promotionService } from "@/lib/services/promotionService"
 import Link from "next/link"
 import Image from "next/image"
+
+const promotions = [
+  { id: "demo-deal-1", name: "Скидка на комплекты", description: "Специальная цена на подбор и установку.", newPrice: "22 000 ₽", oldPrice: "26 000 ₽", imageUrl: "/uploads/gallery/placeholder.jpg", categorySlug: "kits", slug: "rocket-fender-flares" },
+  { id: "demo-deal-2", name: "Комплект освещения", description: "Яркий LED-комплект для автомобиля.", newPrice: "14 900 ₽", oldPrice: "18 000 ₽", imageUrl: "/uploads/gallery/placeholder.jpg", categorySlug: "lighting", slug: "led-headlight-kit" },
+]
 
 function PriceBadge({ newPrice, oldPrice }: { newPrice?: string, oldPrice?: string }) {
   if (!newPrice && !oldPrice) return null
@@ -58,10 +62,6 @@ function PromoCard({
 }
 
 export default async function Deals() {
-  const promotions = await promotionService.getActiveHomePromotions()
-  console.log("promotion ", promotions)
-  const [hero, left, right, ...rest] = promotions
-
   return (
     <div className="w-full py-10 md:py-16 flex flex-col gap-6 md:gap-8">
       <p className="text-[#222] font-manrope text-3xl sm:text-4xl md:text-[50px] font-bold">

@@ -1,17 +1,14 @@
 import { Gallery } from "@/components/gallery";
-import { getPageContent } from "@/lib/services/pageService";
 import { defaultCertificatesData } from "@/lib/constants/defaultPageData";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const page = await getPageContent("certificates");
-  const data = page?.content ?? defaultCertificatesData;
+  const data = defaultCertificatesData;
   return { title: data.meta.title, description: data.meta.description };
 }
 
 export default async function Certificates() {
-  const page = await getPageContent("certificates");
-  const data = page?.content ?? defaultCertificatesData;
+  const data = defaultCertificatesData;
 
   const galleryImages = data.certificates.map((item) => ({
     id: item.id,

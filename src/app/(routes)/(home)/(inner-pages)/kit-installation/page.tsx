@@ -1,22 +1,16 @@
 import { Catalog } from "@/components/sections/Catalog";
 import { VideoCard } from "@/components/VideoCard";
-import { getModels } from "@/lib/services/carModelService";
-import { getPageContent } from "@/lib/services/pageService";
 import { defaultKitInstallationData } from "@/lib/constants/defaultPageData";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const page = await getPageContent("kit-installation");
-  const data = page?.content ?? defaultKitInstallationData;
+  const data = defaultKitInstallationData;
   return { title: data.meta.title, description: data.meta.description };
 }
 
 export default async function KitInstallation() {
-  const [page, models] = await Promise.all([
-    getPageContent("kit-installation"),
-    getModels(),
-  ]);
-  const data = page?.content ?? defaultKitInstallationData;
+  const data = defaultKitInstallationData;
+  const models: { id: string; brand: string; model: string; slug: string; imageUrl: string | null }[] = [];
 
   return (
     <div className="w-full space-y-16 px-4 py-10 sm:px-6 md:space-y-24 md:py-16 lg:px-12">
